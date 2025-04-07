@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stylish - Your Wishlist</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Navigation styles */
+        .navbar {
+            background-color: #333;
+            padding: 10px 0;
+        }
+
+        .search-bar {
+            position: relative;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .search-bar input {
+            padding-right: 40px;
+            border-radius: 20px;
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            border: none;
+            background: none;
+            color: #666;
+        }
+
+        /* Hero section */
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/api/placeholder/1200/300') no-repeat center center;
+            background-size: cover;
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Product cards */
+        .product-card {
+            border: 1px solid #eee;
+            border-radius: 5px;
+            overflow: hidden;
+            transition: 0.3s;
+            height: 100%;
+            background-color: white;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .product-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+
+        .rating {
+            color: #ff9800;
+            font-weight: 500;
+        }
+
+        .product-title {
+            margin-bottom: 10px;
+            height: 40px;
+            overflow: hidden;
+        }
+
+        .product-price {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-weight: normal;
+            margin-left: 5px;
+        }
+
+        .discount {
+            color: #ff5722;
+            font-weight: 500;
+        }
+
+        /* Empty wishlist */
+        .empty-wishlist {
+            text-align: center;
+            padding: 50px 0;
+        }
+
+        .empty-wishlist i {
+            font-size: 80px;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 40px 0 20px;
+        }
+
+        .footer-heading {
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            margin-bottom: 10px;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            text-align: center;
+        }
+
+        /* Wishlist specific */
+        .wishlist-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .remove-btn {
+            color: #dc3545;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .remove-btn:hover {
+            text-decoration: underline;
+        }
+
+        .wishlist-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">Stylish</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="search-bar mx-auto">
+                    <input type="text" class="form-control" placeholder="Search for products, brands and more">
+                    <button class="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html"><i class="fas fa-user me-1"></i> Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="wishlist.html"><i class="fas fa-heart me-1"></i> Wishlist</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cart.html"><i class="fas fa-shopping-cart me-1"></i> Cart</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Wishlist Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="wishlist-header">
+                <h2>My Wishlist <span class="badge bg-secondary">4</span></h2>
+                <div>
+                    <button class="btn btn-outline-danger btn-sm">Remove All</button>
+                </div>
+            </div>
+
+            <!-- Wishlist Items -->
+            <div class="row">
+                <!-- Item 1 -->
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="product-card">
+                        <div class="product-img" style="background-image: url('image/download\ \(2\).jpeg')"></div>
+                        <div class="product-info">
+                            <div class="rating mb-1">4.4 ★</div>
+                            <h5 class="product-title">Formal Shirt - White</h5>
+                            <div class="product-price">
+                                ₹349 <span class="original-price">₹499</span> <span class="discount">25% off</span>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <button class="btn btn-primary btn-sm me-2 flex-grow-1">Add to Cart</button>
+                                <button class="btn btn-secondary btn-sm flex-grow-1">Buy Now</button>
+                            </div>
+                            <div class="wishlist-actions">
+                                <button class="remove-btn"><i class="fas fa-trash-alt me-1"></i> Remove</button>
+                                <small class="text-muted">Added on Apr 1, 2025</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="product-card">
+                        <div class="product-img" style="background-image: url('image/download\ \(4\).jpeg')"></div>
+                        <div class="product-info">
+                            <div class="rating mb-1">4.6 ★</div>
+                            <h5 class="product-title">Casual Hooded Sweatshirt</h5>
+                            <div class="product-price">
+                                ₹499 <span class="original-price">₹599</span> <span class="discount">27% off</span>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <button class="btn btn-primary btn-sm me-2 flex-grow-1">Add to Cart</button>
+                                <button class="btn btn-secondary btn-sm flex-grow-1">Buy Now</button>
+                            </div>
+                            <div class="wishlist-actions">
+                                <button class="remove-btn"><i class="fas fa-trash-alt me-1"></i> Remove</button>
+                                <small class="text-muted">Added on Mar 28, 2025</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="product-card">
+                        <div class="product-img" style="background-image: url('image/download\ \(1\).jpeg')"></div>
+                        <div class="product-info">
+                            <div class="rating mb-1">4.7 ★</div>
+                            <h5 class="product-title">Premium Leather Watch</h5>
+                            <div class="product-price">
+                                ₹999 <span class="original-price">₹1299</span> <span class="discount">38% off</span>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <button class="btn btn-primary btn-sm me-2 flex-grow-1">Add to Cart</button>
+                                <button class="btn btn-secondary btn-sm flex-grow-1">Buy Now</button>
+                            </div>
+                            <div class="wishlist-actions">
+                                <button class="remove-btn"><i class="fas fa-trash-alt me-1"></i> Remove</button>
+                                <small class="text-muted">Added on Mar 25, 2025</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="product-card">
+                        <div class="product-img" style="background-image: url('image/images\ \(4\).jpeg')"></div>
+                        <div class="product-info">
+                            <div class="rating mb-1">4.3 ★</div>
+                            <h5 class="product-title">Designer Sunglasses</h5>
+                            <div class="product-price">
+                                ₹449 <span class="original-price">₹699</span> <span class="discount">33% off</span>
+                            </div>
+                            <div class="d-flex mt-3">
+                                <button class="btn btn-primary btn-sm me-2 flex-grow-1">Add to Cart</button>
+                                <button class="btn btn-secondary btn-sm flex-grow-1">Buy Now</button>
+                            </div>
+                            <div class="wishlist-actions">
+                                <button class="remove-btn"><i class="fas fa-trash-alt me-1"></i> Remove</button>
+                                <small class="text-muted">Added on Mar 15, 2025</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State (hidden by default) -->
+            <div class="empty-wishlist" style="display: none;">
+                <i class="far fa-heart"></i>
+                <h3>Your wishlist is empty</h3>
+                <p class="text-muted">Save items you like in your wishlist. Review them anytime and easily move them to
+                    the bag.</p>
+                <a href="#" class="btn btn-primary mt-3">Continue Shopping</a>
+            </div>
+
+            <!-- Recommendations -->
+            <div class="mt-5">
+                <h3>You might also like</h3>
+                <div class="row mt-4">
+                    <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="product-card">
+                            <div class="product-img" style="background-image: url('image/images\ \(2\).jpeg')"></div>
+                            <div class="product-info">
+                                <div class="rating mb-1">4.5 ★</div>
+                                <h5 class="product-title">Summer Slim Fit Dress</h5>
+                                <div class="product-price">
+                                    ₹749 <span class="original-price">₹999</span> <span class="discount">42% off</span>
+                                </div>
+                                <div class="d-flex mt-3">
+                                    <button class="btn btn-primary btn-sm me-2 flex-grow-1">Add to Cart</button>
+                                    <button class="btn btn-outline-secondary btn-sm"><i
+                                            class="far fa-heart"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="product-card">
+                            <div class="product-img" style="background-image: url('image/download.jpeg')"></div>
+                            <div class="product-info">
+                                <div class="rating mb-1">4.3 ★</div>
+                                <h5 class="product-title">Sports Shoes - Running</h5>
+                                <div class="product-price">
+                                    ₹999 <span class="original-price">₹1199</span> <span class="discount">37% off</span>
+                                </div>
+                                <div class="d-flex mt-3">
+                                    <button class="btn btn-primary btn-sm me-2 flex-grow-1">Add to Cart</button>
+                                    <button class="btn btn-outline-secondary btn-sm"><i
+                                            class="far fa-heart"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="product-card">
+                            <div class="product-img" style="background-image: url('image/images\ \(3\).jpeg')"></div>
+                            <div class="product-info">
+                                <div class="rating mb-1">4.1 ★</div>
+                                <h5 class="product-title">Denim Jeans - Slim Fit</h5>
+                                <div class="product-price">
+                                    ₹749 <span class="original-price">₹899</span> <span class="discount">25% off</span>
+                                </div>
+                                <div class="d-flex mt-3">
+                                    <button class="btn btn-primary btn-sm me-2 flex-grow-1">Add to Cart</button>
+                                    <button class="btn btn-outline-secondary btn-sm"><i
+                                            class="far fa-heart"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="product-card">
+                            <div class="product-img" style="background-image: url('image/images\ \(1\).jpeg')"></div>
+                            <div class="product-info">
+                                <div class="rating mb-1">4.2 ★</div>
+                                <h5 class="product-title">Printed Casual Shirt</h5>
+                                <div class="product-price">
+                                    ₹499 <span class="original-price">₹699</span> <span class="discount">38% off</span>
+                                </div>
+                                <div class="d-flex mt-3">
+                                    <button class="btn btn-primary btn-sm me-2 flex-grow-1">Add to Cart</button>
+                                    <button class="btn btn-outline-secondary btn-sm"><i
+                                            class="far fa-heart"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <h5 class="footer-heading">ABOUT</h5>
+                    <div class="footer-links">
+                        <a href="#">Contact Us</a>
+                        <a href="#">About Us</a>
+                        <a href="#">Careers</a>
+                        <a href="#">Stylish Stories</a>
+                        <a href="#">Press</a>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5 class="footer-heading">HELP</h5>
+                    <div class="footer-links">
+                        <a href="#">Payments</a>
+                        <a href="#">Shipping</a>
+                        <a href="#">Cancellation & Returns</a>
+                        <a href="#">FAQ</a>
+                        <a href="#">Report Infringement</a>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5 class="footer-heading">POLICY</h5>
+                    <div class="footer-links">
+                        <a href="#">Return Policy</a>
+                        <a href="#">Terms Of Use</a>
+                        <a href="#">Security</a>
+                        <a href="#">Privacy</a>
+                        <a href="#">Sitemap</a>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5 class="footer-heading">SOCIAL</h5>
+                    <div class="d-flex mb-4">
+                        <a href="#" class="me-3"><i class="fab fa-facebook-f fa-lg"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-youtube fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Stylish.com</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Demo functionality for the wishlist page
+        $(document).ready(function () {
+            // Remove item functionality
+            $('.remove-btn').click(function () {
+                const productCard = $(this).closest('.col-md-6');
+                productCard.fadeOut(300, function () {
+                    $(this).remove();
+
+                    // Update wishlist count
+                    const count = $('.product-card').length;
+                    $('.badge').text(count);
+
+                    // Show empty state if no items left
+                    if (count === 0) {
+                        $('.empty-wishlist').fadeIn();
+                        $('.wishlist-header').hide();
+                    }
+                });
+            });
+
+            // Remove all functionality
+            $('.btn-outline-danger').click(function () {
+                $('.product-card').parent('.col-md-6').fadeOut(300, function () {
+                    $(this).remove();
+                    $('.empty-wishlist').fadeIn();
+                    $('.wishlist-header').hide();
+                    $('.badge').text('0');
+                });
+            });
+
+            // Add to wishlist for recommended products
+            $('.btn-outline-secondary').click(function () {
+                $(this).toggleClass('active');
+                const icon = $(this).find('i');
+
+                if (icon.hasClass('far')) {
+                    icon.removeClass('far').addClass('fas');
+                    $(this).addClass('btn-secondary').removeClass('btn-outline-secondary');
+                } else {
+                    icon.removeClass('fas').addClass('far');
+                    $(this).removeClass('btn-secondary').addClass('btn-outline-secondary');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
